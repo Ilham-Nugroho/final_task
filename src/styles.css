@@ -1,3 +1,16 @@
+.width-100 {
+  width: 100%;
+}
+
+.bg-e5 {
+  background-color: #e5e5e5;
+}
+
+.btn:active,
+.btn:focus {
+  box-shadow: none;
+}
+
 .nav-login-btn {
   background-color: #ffc700;
   color: #000;
@@ -9,8 +22,19 @@
   border-width: 2px;
 }
 
+.nav-btn {
+  background-color: #ffc700;
+  color: #000;
+  width: 100px;
+}
+.nav-btn:hover {
+  color: #ff7700;
+  border-color: #ff7700;
+  border-width: 2px;
+}
+
 .login-btn {
-  background-color: #433434;
+  background-color: #ff9f00;
   color: #fff;
   width: 100%;
 }
@@ -25,4 +49,39 @@
 .form-control:focus {
   box-shadow: none;
   border-color: #ffc700;
+}
+
+.home-header {
+  min-height: 500px;
+  background-color: #ffc700;
+}
+
+.header-title {
+  display: flex;
+  padding: 64px 13% 40px 13%;
+}
+
+.content-desc img {
+  height: 5px;
+  width: 30%;
+}
+.content-desc p {
+  margin-left: 26px;
+}
+
+.sidebar {
+  width: 200px;
+  min-height: 100vh;
+  background-color: "#white";
+}
+
+.sidebar-btn:hover {
+  color: #ff9f00;
+  background-color: "transparent";
+  font-size: "20px";
+  font-weight: "400px";
+}
+
+.sidebar-btn {
+  color: "black";
 }

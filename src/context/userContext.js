@@ -4,8 +4,8 @@ export const UserContext = createContext();
 
 const initialState = {
   isLogin: false,
-  // user: null,
-  // loading: true,
+  user: null,
+  loading: true,
 };
 
 const reducer = (state, action) => {
@@ -14,30 +14,30 @@ const reducer = (state, action) => {
   switch (type) {
     case "USER_SUCCESS":
     case "LOGIN_SUCCESS":
-      // localStorage.setItem("token", payload.token);
+      localStorage.setItem("token", payload.token);
 
       return {
         ...state,
         isLogin: true,
-        // user: {
-        //   email: payload.email,
-        //   name: payload.name,
-        //   role: payload.role,
-        //   id: payload.id,
-        // },
-        // loading: false,
+        user: {
+          email: payload.email,
+          fullName: payload.fullName,
+          id: payload.id,
+          avatar: payload.avatar,
+        },
+        loading: false,
       };
     //MASUKKAN AVATAR KE SINI
 
     case "EDIT_PROFILE":
       return {
         ...state,
-        // user: payload,
+        user: payload,
       };
 
     case "AUTH_ERROR":
     case "LOGOUT":
-      // localStorage.removeItem("token");
+      localStorage.removeItem("token");
       return {
         ...state,
         isLogin: false,

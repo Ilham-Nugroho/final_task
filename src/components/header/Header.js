@@ -9,25 +9,32 @@ import { NavIn } from "./NavIn";
 
 export const Header = () => {
   const [state, dispatch] = useContext(UserContext);
-  const [show, setShow] = useState(false); //login
-  const [show2, setShow2] = useState(false); //register
+  const [showLogin, setShowLogin] = useState(false); //login
+  const [showRegister, setShowRegister] = useState(false); //register
 
-  const handleClose = () => {
-    setShow(false);
+  const closeLogin = () => {
+    setShowLogin(false);
   };
 
-  const handleClose2 = () => {
-    setShow2(false);
+  const closeRegister = () => {
+    setShowRegister(false);
   };
 
-  const clickLogin = (event) => {
-    event.preventDefault();
+  const clickLogin = () => {
+    setShowLogin(false);
+  };
 
-    dispatch({
-      type: "LOGIN_SUCCESS",
-    });
+  const clickRegister = () => {
+    setShowRegister(false);
+  };
 
-    setShow(false);
+  const openLoginCloseRegister = () => {
+    setShowRegister(false);
+    setShowLogin(true);
+  };
+  const openRegisterCloseLogin = () => {
+    setShowRegister(true);
+    setShowLogin(false);
   };
 
   const clickLogOut = (event) => {
@@ -40,13 +47,20 @@ export const Header = () => {
   return (
     <div>
       {state.isLogin ? (
-        <NavIn clickLogOut={clickLogOut} />
+        <div>
+          <NavIn clickLogOut={clickLogOut} />
+        </div>
       ) : (
-        <Navbar id="nav" expand="lg" variant="dark" bg="dark">
+        <Navbar
+          id="nav"
+          expand="lg"
+          variant="light"
+          style={{ backgroundColor: "#E5E5E5", padding: "8px 30px" }}
+        >
           <Navbar.Brand href="/" className="text-light" id="brand">
             <img
-              src="./logo192.png"
-              style={{ width: "50px", height: "50px" }}
+              src="./img/wayslink.png"
+              style={{ width: "100px", height: "20px" }}
             />
           </Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
@@ -56,7 +70,14 @@ export const Header = () => {
                 <button
                   className="btn btn-md nav-login-btn"
                   onClick={() => {
-                    setShow(true);
+                    setShowLogin(true);
+                  }}
+                  style={{
+                    backgroundColor: "transparent",
+                    color: "black",
+                    fontWeight: "600",
+                    fontSize: "14px",
+                    borderRadius: "10px",
                   }}
                 >
                   Log In
@@ -66,7 +87,14 @@ export const Header = () => {
                 <button
                   className="btn btn-md nav-login-btn"
                   onClick={() => {
-                    setShow2(true);
+                    setShowRegister(true);
+                  }}
+                  style={{
+                    color: "white",
+                    fontWeight: "600",
+                    fontSize: "14px",
+                    borderRadius: "10px",
+                    backgroundColor: "#FF9F00",
                   }}
                 >
                   Register
@@ -76,14 +104,20 @@ export const Header = () => {
           </Navbar.Collapse>
         </Navbar>
       )}
-      <Modal show={show} onHide={handleClose} size="md">
+      <Modal show={showLogin} onHide={closeLogin} size="md">
         <Modal.Body>
-          <LoginModal clickLogin={clickLogin} />
+          <LoginModal
+            clickLogin={clickLogin}
+            openRegisterCloseLogin={openRegisterCloseLogin}
+          />
         </Modal.Body>
       </Modal>
-      <Modal show={show2} onHide={handleClose2} size="md">
+      <Modal show={showRegister} onHide={closeRegister} size="md">
         <Modal.Body>
-          <RegisterModal />
+          <RegisterModal
+            clickRegister={clickRegister}
+            openLoginCloseRegister={openLoginCloseRegister}
+          />
         </Modal.Body>
       </Modal>
     </div>
