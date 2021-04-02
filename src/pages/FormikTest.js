@@ -14,7 +14,7 @@ export const FriendList = () => {
       <div>
         <h1>Friend List</h1>
         <Formik
-          initialValues={{ kawan: ["jared", "ian", "brent"] }}
+          initialValues={{ friends: ["jared", "ian", "brent"] }}
           onSubmit={(values) =>
             setTimeout(() => {
               alert(JSON.stringify(values, null, 2));
@@ -64,7 +64,7 @@ export const FriendList = () => {
         />
         <h1>Title List</h1>
         <Formik
-          initialValues={{ titles: [], descs: [] }}
+          initialValues={{ titles: [] }}
           onSubmit={(values) =>
             setTimeout(() => {
               alert(JSON.stringify(values, null, 2));
@@ -81,6 +81,7 @@ export const FriendList = () => {
                         values.titles.map((title, index) => (
                           <div key={index}>
                             <Field name={`titles.${index}`} />
+
                             <button
                               type="button"
                               onClick={() => arrayHelpers.remove(index)} // remove a friend from the list
@@ -107,40 +108,7 @@ export const FriendList = () => {
                     </div>
                   )}
                 />
-                <FieldArray
-                  name="descs"
-                  render={(arrayHelpers) => (
-                    <div>
-                      {values.descs && values.descs.length > 0 ? (
-                        values.descs.map((desc, index) => (
-                          <div key={index}>
-                            <Field name={`descs.${index}`} />
-                            <button
-                              type="button"
-                              onClick={() => arrayHelpers.remove(index)} // remove a friend from the list
-                            >
-                              -
-                            </button>
-                            <button
-                              type="button"
-                              onClick={() => arrayHelpers.insert(index, "")} // insert an empty string at a position
-                            >
-                              +
-                            </button>
-                          </div>
-                        ))
-                      ) : (
-                        <button
-                          type="button"
-                          onClick={() => arrayHelpers.push("")}
-                        >
-                          {/* show this when user has removed all friends from the list */}
-                          Add a desc
-                        </button>
-                      )}
-                    </div>
-                  )}
-                />
+
                 <div>
                   <button type="submit">Submit</button>
                 </div>

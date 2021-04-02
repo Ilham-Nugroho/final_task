@@ -16,17 +16,19 @@ export const CreateLink = () => {
   const [form, setForm] = useState({
     title: "",
     description: "",
-    links: [
-      {
-        subtitle: "",
-        suburl: "",
-        subimage: "",
-      },
-    ],
+    links: [],
   });
 
   const { title, description, links } = form;
-  const { subtitle, suburl, subimage } = links;
+
+  const [link, setLink] = useState({
+    subtitle: "",
+    suburl: "",
+    subimage: "",
+  });
+
+  const { subtitle, suburl, subimage } = link;
+  // const { subtitle, suburl, subimage } = links;
 
   const createMainLink = useMutation(async () => {
     try {
@@ -83,12 +85,35 @@ export const CreateLink = () => {
     setForm(tempForm);
   };
 
+  const changeOnLink = (event) => {
+    const tempLink = { ...link };
+
+    tempLink[event.target.name] =
+      event.target.type === "file" ? event.target.files[0] : event.target.value;
+
+    setLink(tempLink);
+  };
+
+  const onClickToAddLinks = () => {
+    const addNewLink = {
+      ...form,
+      links: [...links, link],
+    };
+
+    setForm(addNewLink);
+    setLink({
+      subtitle: "",
+      suburl: "",
+      subimage: "",
+    });
+  };
+
   return (
     <div className="d-flex">
       <div>
         <Sidebar />
       </div>
-      <div className="d-flex flex-column width-100 bg-e5">
+      {/* <div className="d-flex flex-column width-100 bg-e5">
         <div
           style={{ backgroundColor: "white", height: "60px" }}
           className="d-flex align-items-center pl-3"
@@ -120,9 +145,9 @@ export const CreateLink = () => {
             <div>aaaaaaaaaaaaaaaaaa</div>
           </div>
         </div>
-      </div>
+      </div> */}
 
-      {/* <div style={{ backgroundColor: "#e5e5e5" }} className="pb-5 width-100">
+      <div style={{ backgroundColor: "#e5e5e5" }} className="pb-5 width-100">
         <div
           style={{ backgroundColor: "white", height: "60px" }}
           className="d-flex align-items-center pl-3"
@@ -131,7 +156,7 @@ export const CreateLink = () => {
         </div>
 
         <div style={{ margin: "0 10%" }} className="pt-5">
-          <form onSubmit={(event) => handleSubmit(event)}>
+          <form onSubmit={(event) => handleSubmit(event)} autoComplete="off">
             <div className="d-flex flex-column form-group">
               <label>Your Link-Group Title:</label>
               <input
@@ -153,74 +178,6 @@ export const CreateLink = () => {
                 onChange={handleChange}
               />
             </div>
-
-            <div style={{ margin: "0 10%" }} className="pt-5">
-              First Link:
-              <div className="d-flex flex-column form-group">
-                <label>Link Name</label>
-                <input
-                  className="form-control"
-                  value={subtitle}
-                  name="subtitle"
-                  type="text"
-                  onChange={handleChange}
-                />
-              </div>
-              <div className="d-flex flex-column form-group">
-                <label>Link Url</label>
-                <input
-                  className="form-control"
-                  value={suburl}
-                  name="suburl"
-                  type="text"
-                  onChange={handleChange}
-                />
-              </div>
-              <div className="d-flex flex-column form-group">
-                <label>Link Image</label>
-                <input
-                  className="form-control"
-                  value={subimage}
-                  name="subimage"
-                  type="file"
-                  onChange={handleChange}
-                />
-              </div>
-            </div>
-
-            <div style={{ margin: "0 10%" }} className="pt-5">
-              Second Link:
-              <div className="d-flex flex-column form-group">
-                <label>Link Name</label>
-                <input
-                  className="form-control"
-                  value={links[1].subtitle}
-                  name="subtitle"
-                  type="text"
-                  onChange={handleChange}
-                />
-              </div>
-              <div className="d-flex flex-column form-group">
-                <label>Link Url</label>
-                <input
-                  className="form-control"
-                  value={links[1].suburl}
-                  name="suburl"
-                  type="text"
-                  onChange={handleChange}
-                />
-              </div>
-              <div className="d-flex flex-column form-group">
-                <label>Link Image</label>
-                <input
-                  className="form-control"
-                  value={links[1].subimage}
-                  name="subimage"
-                  type="file"
-                  onChange={handleChange}
-                />
-              </div>
-            </div>
             <div className="d-inline d-flex justify-content-center align-items-center">
               <button
                 type="submit"
@@ -230,9 +187,79 @@ export const CreateLink = () => {
                 Make Link Group
               </button>
             </div>
+
+            {links.map(({ subtitle, suburl, subimage }) => (
+              <>
+                <div className="d-flex flex-column form-group">
+                  <label>Link Name</label>
+                  <input
+                    className="form-control"
+                    value={subtitle}
+                    name="subtitle"
+                    type="text"
+                    onChange={changeOnLink}
+                  />
+                </div>
+                <div className="d-flex flex-column form-group">
+                  <label>URL</label>
+                  <input
+                    className="form-control"
+                    value={suburl}
+                    name="suburl"
+                    type="text"
+                    onChange={changeOnLink}
+                  />
+                </div>
+                <div className="d-flex flex-column form-group">
+                  <label>Link IMAGE</label>
+                  <input
+                    className="form-control"
+                    value={subimage}
+                    name="subimage"
+                    type="text"
+                    onChange={changeOnLink}
+                  />
+                </div>
+              </>
+            ))}
+            <div>
+              <div className="d-flex flex-column form-group">
+                <label>Link Name</label>
+                <input
+                  className="form-control"
+                  value={subtitle}
+                  name="subtitle"
+                  type="text"
+                  onChange={changeOnLink}
+                />
+              </div>
+              <div className="d-flex flex-column form-group">
+                <label>URL</label>
+                <input
+                  className="form-control"
+                  value={suburl}
+                  name="suburl"
+                  type="text"
+                  onChange={changeOnLink}
+                />
+              </div>
+              <div className="d-flex flex-column form-group">
+                <label>Link IMAGE</label>
+                <input
+                  className="form-control"
+                  value={subimage}
+                  name="subimage"
+                  type="text"
+                  onChange={changeOnLink}
+                />
+              </div>
+            </div>
           </form>
+          <button className="btn btn-lg" onClick={onClickToAddLinks}>
+            Click to Add more links
+          </button>
         </div>
-      </div> */}
+      </div>
     </div>
   );
 };
