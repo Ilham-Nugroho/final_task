@@ -1,7 +1,7 @@
 import React, { useState, useContext } from "react";
 import { useQuery, useMutation } from "react-query";
 
-import { Spinner } from "react-bootstrap";
+import { Spinner, Form, FormFile } from "react-bootstrap";
 
 import { UserContext } from "../context/userContext";
 
@@ -14,12 +14,15 @@ export const CreateLink = () => {
   const [userState, userDispatch] = useContext(UserContext);
 
   const [form, setForm] = useState({
+    image: null,
     title: "",
     description: "",
+    views: "",
+    template: "",
     links: [],
   });
 
-  const { title, description, links } = form;
+  const { image, title, description, views, template, links } = form;
 
   const [link, setLink] = useState({
     subtitle: "",
@@ -28,7 +31,6 @@ export const CreateLink = () => {
   });
 
   const { subtitle, suburl, subimage } = link;
-  // const { subtitle, suburl, subimage } = links;
 
   const createMainLink = useMutation(async () => {
     try {
@@ -39,8 +41,12 @@ export const CreateLink = () => {
       };
 
       const fromBody = {
+        image: image,
         title: title,
         description: description,
+        views: views,
+        template: template,
+
         links: links.map((data) => ({
           subtitle: data.subtitle,
           suburl: data.suburl,
@@ -113,151 +119,176 @@ export const CreateLink = () => {
       <div>
         <Sidebar />
       </div>
-      {/* <div className="d-flex flex-column width-100 bg-e5">
+
+      <div
+        // style={{ backgroundColor: "#e5e5e5" }}
+        className=" width-100 bg-e5"
+      >
         <div
           style={{ backgroundColor: "white", height: "60px" }}
           className="d-flex align-items-center pl-3"
         >
           <h4 style={{ fontSize: "22px", margin: "0px" }}>Template</h4>
         </div>
-        <div className="pb-5 ">
-          <div className="d-flex justify-content-between pl-3 pr-5 pt-4">
-            <div>
-              <h4 style={{ fontSize: "20px", margin: "0px" }}>Create Link</h4>
-            </div>
-
-            <button
-              className="btn btn-lg login-btn"
-              style={{ width: "13%", height: "40px", borderRadius: "10px" }}
-            >
-              <h5
-                style={{ margin: "0px", fontSize: "20px", fontWeight: "400" }}
-                className="justify-content-center align-items-center d-flex"
-              >
-                Publish Link
-              </h5>
-            </button>
-          </div>
-          <div className="d-flex mt-3">
-            <div>
-              <img src="./img/template1.png" />
-            </div>
-            <div>aaaaaaaaaaaaaaaaaa</div>
+        <div className="d-flex align-items-center justify-content-between mt-3 ml-3">
+          <div className="ml-3">
+            <h5 style={{ margin: "0px" }}>Create Link</h5>
           </div>
         </div>
-      </div> */}
 
-      <div style={{ backgroundColor: "#e5e5e5" }} className="pb-5 width-100">
-        <div
-          style={{ backgroundColor: "white", height: "60px" }}
-          className="d-flex align-items-center pl-3"
-        >
-          <h4 style={{ fontSize: "22px", margin: "0px" }}>Template</h4>
-        </div>
-
-        <div style={{ margin: "0 10%" }} className="pt-5">
-          <form onSubmit={(event) => handleSubmit(event)} autoComplete="off">
-            <div className="d-flex flex-column form-group">
-              <label>Your Link-Group Title:</label>
-              <input
-                className="form-control"
-                value={title}
-                name="title"
-                type="text"
-                onChange={handleChange}
-              />
-            </div>
-
-            <div className="d-flex flex-column form-group">
-              <label>Description</label>
-              <textarea
-                className="form-control"
-                value={description}
-                name="description"
-                type="text"
-                onChange={handleChange}
-              />
-            </div>
-            <div className="d-inline d-flex justify-content-center align-items-center">
-              <button
-                type="submit"
-                className="btn btn-lg "
-                style={{ backgroundColor: "#ff7700" }}
+        <div className="d-flex width-100 pl-3">
+          <div
+            style={{
+              backgroundColor: "white",
+              width: "100%",
+              maxHeight: "80vh",
+              overflow: "scroll",
+            }}
+            className="mt-3 ml-3 mr-5 pt-4 pl-4 pr-4"
+          >
+            <div className="justify-content-center">
+              <form
+                onSubmit={(event) => handleSubmit(event)}
+                autoComplete="off"
               >
-                Make Link Group
-              </button>
-            </div>
+                <div className="d-inline d-flex justify-content-end">
+                  <button type="submit" className="btn btn-md publish-link">
+                    Publish Link
+                  </button>
+                </div>
+                <div className=" mb-2 d-flex align-items-center">
+                  <div>
+                    <img src="./img/preview.png" style={{ width: "90%" }} />
+                  </div>
+                  <Form.File
+                    id="custom-file"
+                    label="Add Link-Group Image"
+                    style={{ margin: "0px 10px" }}
+                    value={image}
+                    name="image"
+                    onChange={handleChange}
+                    custom
+                  />
+                </div>
 
-            {links.map(({ subtitle, suburl, subimage }) => (
-              <>
                 <div className="d-flex flex-column form-group">
-                  <label>Link Name</label>
+                  <label className="color-7e7a7a">Your Link-Group Title:</label>
                   <input
-                    className="form-control"
-                    value={subtitle}
-                    name="subtitle"
+                    className="form-control-link"
+                    value={title}
+                    name="title"
                     type="text"
-                    onChange={changeOnLink}
+                    onChange={handleChange}
                   />
                 </div>
+
                 <div className="d-flex flex-column form-group">
-                  <label>URL</label>
-                  <input
-                    className="form-control"
-                    value={suburl}
-                    name="suburl"
+                  <label className="color-7e7a7a">Description</label>
+                  <textarea
+                    className="form-control-link"
+                    value={description}
+                    name="description"
                     type="text"
-                    onChange={changeOnLink}
+                    onChange={handleChange}
                   />
                 </div>
-                <div className="d-flex flex-column form-group">
-                  <label>Link IMAGE</label>
-                  <input
-                    className="form-control"
-                    value={subimage}
-                    name="subimage"
-                    type="text"
-                    onChange={changeOnLink}
-                  />
+
+                {links.map(({ subtitle, suburl, subimage }, index) => (
+                  <div
+                    className="d-flex width-100 align-items-center mb-5"
+                    key={index}
+                  >
+                    <div>
+                      <img src="./img/preview.png" style={{ width: "90%" }} />
+                    </div>
+                    <div className="width-100">
+                      <div className="d-flex flex-column form-group">
+                        <label className="color-7e7a7a">Link Name</label>
+                        <input
+                          className="form-control-link"
+                          value={subtitle}
+                          name="subtitle"
+                          type="text"
+                          onChange={changeOnLink}
+                        />
+                      </div>
+                      <div className="d-flex flex-column form-group">
+                        <label className="color-7e7a7a">URL</label>
+                        <input
+                          className="form-control-link"
+                          value={suburl}
+                          name="suburl"
+                          type="text"
+                          onChange={changeOnLink}
+                        />
+                      </div>
+
+                      <Form.File
+                        id="custom-file"
+                        label="Add Link Image"
+                        style={{ margin: "0px" }}
+                        value={subimage}
+                        name="subimage"
+                        onChange={changeOnLink}
+                        custom
+                      />
+                    </div>
+                  </div>
+                ))}
+
+                <div className="d-flex width-100 align-items-center mt-3 mb-2">
+                  <div>
+                    <img src="./img/preview.png" style={{ width: "90%" }} />
+                  </div>
+                  <div className="width-100">
+                    <div className="d-flex flex-column form-group">
+                      <label className="color-7e7a7a">Link Name</label>
+                      <input
+                        className="form-control-link"
+                        value={subtitle}
+                        name="subtitle"
+                        type="text"
+                        onChange={changeOnLink}
+                        placeholder="ex. Facebook"
+                      />
+                    </div>
+                    <div className="d-flex flex-column form-group">
+                      <label className="color-7e7a7a">URL</label>
+                      <input
+                        className="form-control-link"
+                        value={suburl}
+                        name="suburl"
+                        type="text"
+                        onChange={changeOnLink}
+                        placeholder="ex. www.facebook.com"
+                      />
+                    </div>
+                    <Form.File
+                      id="custom-file"
+                      label="Add Link Image"
+                      style={{ margin: "0px" }}
+                      value={subimage}
+                      name="subimage"
+                      onChange={changeOnLink}
+                      custom
+                    />
+                  </div>
                 </div>
-              </>
-            ))}
-            <div>
-              <div className="d-flex flex-column form-group">
-                <label>Link Name</label>
-                <input
-                  className="form-control"
-                  value={subtitle}
-                  name="subtitle"
-                  type="text"
-                  onChange={changeOnLink}
-                />
-              </div>
-              <div className="d-flex flex-column form-group">
-                <label>URL</label>
-                <input
-                  className="form-control"
-                  value={suburl}
-                  name="suburl"
-                  type="text"
-                  onChange={changeOnLink}
-                />
-              </div>
-              <div className="d-flex flex-column form-group">
-                <label>Link IMAGE</label>
-                <input
-                  className="form-control"
-                  value={subimage}
-                  name="subimage"
-                  type="text"
-                  onChange={changeOnLink}
-                />
+              </form>
+              <div className="d-flex justify-content-center">
+                <button
+                  className="btn btn-lg publish-link"
+                  onClick={onClickToAddLinks}
+                >
+                  Add more Link
+                </button>
               </div>
             </div>
-          </form>
-          <button className="btn btn-lg" onClick={onClickToAddLinks}>
-            Click to Add more links
-          </button>
+          </div>
+
+          <div style={{ width: "70%" }} className="mt-3">
+            <img src="./img/template1.png" style={{ width: "300px" }} />
+          </div>
         </div>
       </div>
     </div>

@@ -8,6 +8,7 @@ import { UserContext } from "../context/userContext";
 import { useParams } from "react-router-dom";
 
 import { API, setAuthToken } from "../config/api";
+import { Sidebar } from "../components/header/Sidebar";
 
 export const UniqueLink = () => {
   const [userState, userDispatch] = useContext(UserContext);
@@ -17,9 +18,11 @@ export const UniqueLink = () => {
     data: uniqueData,
     error: uniqueError,
     loading: uniqueLoading,
-  } = useQuery("productCache", async () => {
+  } = useQuery("uniqueCache", async () => {
     return API.get(`/link/${unique}`);
   });
+
+  console.log(uniqueData);
 
   return (
     <div>
@@ -28,17 +31,23 @@ export const UniqueLink = () => {
           <span className="sr-only">Loading...</span>
         </Spinner>
       ) : (
-        <div
-          style={{ border: "1px solid", margin: "0 20%" }}
-          className="d-flex flex-column justify-content-center align-items-center mt-4"
-        >
-          <div>Title: {uniqueData?.data?.data?.link.title}</div>
-          <div>Description: {uniqueData?.data?.data?.link.description}</div>
-
+        <div className="d-flex">
           <div>
-            <div className="d-flex justify-content-center align-items-center">
-              {uniqueData?.data?.data?.link.sublink.subtitle}:{" "}
-              {uniqueData?.data?.data?.link.sublink.suburl}
+            <Sidebar />
+          </div>
+
+          <div
+            style={{ border: "1px solid", margin: "0 20%" }}
+            className="d-flex flex-column justify-content-center align-items-center mt-4 width-100"
+          >
+            <div>Title: {uniqueData?.data?.data?.link.title}</div>
+            <div>Description: {uniqueData?.data?.data?.link.description}</div>
+
+            <div>
+              <div className="d-flex justify-content-center align-items-center">
+                {uniqueData?.data?.data?.link.sublink.subtitle}:{" "}
+                {uniqueData?.data?.data?.link.sublink.suburl}
+              </div>
             </div>
           </div>
         </div>

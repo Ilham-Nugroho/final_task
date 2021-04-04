@@ -16,8 +16,12 @@ import { Template } from "./pages/Template";
 import { CreateLink } from "./pages/CreateLink";
 import { MyLink } from "./pages/MyLink";
 import { UniqueLink } from "./pages/UniqueLink";
-import { Sidebar } from "./components/header/Sidebar";
-import { FriendList } from "./pages/FormikTest";
+
+import { Template1 } from "./components/template/Template1";
+import { Template2 } from "./components/template/Template2";
+import { Template3 } from "./components/template/Template3";
+import { Template4 } from "./components/template/Template4";
+
 if (localStorage.token) {
   setAuthToken(localStorage.token);
 }
@@ -72,8 +76,7 @@ function App() {
           <PrivateRoute exact path="/template" component={Template} />
           <PrivateRoute exact path="/link" component={CreateLink} />
           <PrivateRoute exact path="/my-link" component={MyLink} />
-          <PrivateRoute exact path="/link/:unique" component={UniqueLink} />
-          <PrivateRoute exact path="/friends" component={FriendList} />
+          <Route exact path="/link/:unique" component={Template4} />
         </Switch>
       </Router>
     </QueryClientProvider>

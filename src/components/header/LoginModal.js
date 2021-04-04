@@ -27,15 +27,6 @@ export const LoginModal = (props) => {
     }));
   };
 
-  // const {
-  //   data: userData,
-  //   error: usarError,
-  //   loading: userLoading,
-  //   refetch: userRefetch,
-  // } = useQuery(["userLoginCache", state.user.id], async () => {
-  //   return API.get(`/user/${userState.user.id}`);
-  // });
-
   const loginUser = useMutation(async () => {
     const config = {
       headers: {

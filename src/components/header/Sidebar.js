@@ -59,16 +59,6 @@ export const Sidebar = () => {
             My Link
           </button>
         </Nav.Link>
-        <Nav.Link
-          as={Link}
-          to="/friends"
-          style={{ margin: "0px", padding: "0px" }}
-        >
-          <button className="btn btn-lg d-flex  align-items-center sidebar-btn mt-3">
-            <img src="./img/broken-link.png" className="mr-2 ml-4" />
-            Friends
-          </button>
-        </Nav.Link>
       </div>
       <div className="mb-4">
         <button

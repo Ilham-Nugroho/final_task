@@ -85,3 +85,33 @@
 .sidebar-btn {
   color: "black";
 }
+
+/*------------------------- CREATE LINK PAGE CSS ---------------------------*/
+.color-7e7a7a {
+  color: #7e7a7a;
+  font-size: 15px;
+  margin: 0px;
+}
+
+.publish-link {
+  background-color: #ff9f00;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  color: white;
+}
+
+.form-control-link {
+  border: none;
+  border-radius: 0px;
+  background-color: white;
+  border-bottom: 2px solid #e5e5e5;
+  height: 30px;
+}
+
+.form-control-link:active,
+.form-control-link:focus {
+  /* border: none; */
+  outline: none;
+  border-bottom: 2px solid #766c6c;
+}
