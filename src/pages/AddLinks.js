@@ -10,21 +10,21 @@ import { useParams } from "react-router-dom";
 import { API, setAuthToken } from "../config/api";
 import { Sidebar } from "../components/header/Sidebar";
 
-export const CreateLink = () => {
+export const AddLinks = () => {
   const [userState, userDispatch] = useContext(UserContext);
 
   const [form, setForm] = useState({
     image: null,
     title: "",
     description: "",
-    views: "",
+    // views: "",
     template: "",
     links: [],
   });
 
   const { image, title, description, views, template, links } = form;
 
-  // console.log(JSON.stringify(links));
+  const linksStringify = JSON.stringify(links);
 
   const [link, setLink] = useState({
     subtitle: "",
@@ -34,14 +34,11 @@ export const CreateLink = () => {
 
   const { subtitle, suburl, subimage } = link;
 
-  const linksStringify = JSON.stringify(links);
-
   const createMainLink = useMutation(async () => {
     try {
       const config = {
         headers: {
           "Content-Type": "multipart/form-data",
-          // "Content-Type": "application/x-www-form-urlencoded",
         },
       };
 
@@ -50,48 +47,59 @@ export const CreateLink = () => {
       body.append("title", title);
       body.append("description", description);
       body.append("image", image);
-      // body.append("links", linksStringify);
+      body.append("links", linksStringify);
+      links.map((data) => {
+        body.append("image", data.subimage);
+      });
 
-      // const fromBody = {
-      //   image: image,
-      //   title: title,
-      //   description: description,
-      //   views: views,
-      //   template: template,
+      // console.log(body);
 
-      //   links: links.map((data) => ({
-      //     subtitle: data.subtitle,
-      //     suburl: data.suburl,
-      //     subimage: data.subimage,
-      //   })),
-      // };
-
-      // const body = JSON.stringify(fromBody);
-
-      console.log(body);
-
-      await API.post("/link", body, config);
+      const responseMain = await API.post("/link", body, config);
+      return responseMain;
     } catch (error) {
       console.log(error);
       alert("Oopss, error occured: ", error);
     }
   });
 
+  console.log(createMainLink);
+
+  // const createSubLink = useMutation(async () => {
+  //   try {
+  //     const config = {
+  //       headers: {
+  //         "Content-Type": "multipart/form-data",
+  //       },
+  //     };
+
+  //     const subbody = new FormData();
+
+  //     // links.map((data) => {});
+
+  //     // subbody.append("links", linksStringify);
+  //     subbody.append("subtitle", subtitle);
+  //     subbody.append("suburl", suburl);
+  //     subbody.append("image", subimage);
+  //     // subbody.append("mainId", responseMain.id);
+
+  //     // console.log(subbody);
+
+  //     await API.post("/sublink", subbody, config);
+  //   } catch (error) {
+  //     console.log(error);
+  //     alert("Oopss, error occured: ", error);
+  //   }
+  // });
+
   const handleSubmit = (event) => {
     event.preventDefault();
 
     createMainLink.mutate();
+    // createSubLink.mutate();
 
     setForm({
       title: "",
       description: "",
-      links: [
-        {
-          subtitle: "",
-          suburl: "",
-          subimage: "",
-        },
-      ],
     });
   };
 
@@ -109,16 +117,6 @@ export const CreateLink = () => {
       event.target.type === "file" ? event.target.files[0] : event.target.value;
 
     setLink(tempLink);
-  };
-
-  const changeOnLinkImage = (event) => {
-    const file = event.target.files[0];
-    const reader = new FileReader();
-    reader.onloadend = function () {
-      const resultImg = reader.result;
-      setLink({ ...link, subimage: resultImg });
-    };
-    reader.readAsDataURL(file);
   };
 
   const onClickToAddLinks = () => {
@@ -181,15 +179,6 @@ export const CreateLink = () => {
                   <div>
                     <img src="./img/preview.png" style={{ width: "90%" }} />
                   </div>
-                  {/* <Form.File
-                    id="custom-file"
-                    label="Add Link-Group Image"
-                    style={{ margin: "0px 10px" }}
-                    value={image}
-                    name="image"
-                    // onChange={handleChange}
-                    custom
-                  /> */}
 
                   <input
                     type="file"
@@ -222,7 +211,7 @@ export const CreateLink = () => {
                   />
                 </div>
 
-                {links.map(({ subtitle, suburl, subimage }, index) => (
+                {links?.map(({ subtitle, suburl, subimage }, index) => (
                   <div
                     className="d-flex width-100 align-items-center mb-5"
                     key={index}
@@ -257,7 +246,7 @@ export const CreateLink = () => {
                         style={{ margin: "0px" }}
                         // value={subimage?.name}
                         name="subimage"
-                        onChange={changeOnLinkImage}
+                        onChange={changeOnLink}
                       />
                     </div>
                   </div>
@@ -290,22 +279,13 @@ export const CreateLink = () => {
                         placeholder="ex. www.facebook.com"
                       />
                     </div>
-                    {/* <Form.File
-                      id="custom-file"
-                      label="Add Link Image"
-                      style={{ margin: "0px" }}
-                      value={subimage}
-                      name="subimage"
-                      onChange={changeOnLink}
-                      custom
-                    /> */}
 
                     <input
                       type="file"
                       style={{ margin: "0px" }}
                       // value={subimage?.name}
                       name="subimage"
-                      onChange={changeOnLinkImage}
+                      onChange={changeOnLink}
                     />
                   </div>
                 </div>

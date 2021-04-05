@@ -1,14 +1,20 @@
-import React from "react";
+import React, { useContext } from "react";
 import { useHistory } from "react-router";
 import { Sidebar } from "../components/header/Sidebar";
+import { TemplateContext } from "../context/templateContext";
 
 export const Template = () => {
+  const [templateState, setTemplateState] = useContext(TemplateContext);
   const history = useHistory();
   const handleClick = (event) => {
     event.preventDefault();
 
     history.push("/link");
   };
+
+  // const clickTemplate = () => {
+  //   setTemplateState
+  // }
 
   return (
     <div className="d-flex ">

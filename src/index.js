@@ -5,11 +5,14 @@ import { UserContextProvider } from "./context/userContext";
 
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
+import { TemplateContextProvider } from "./context/templateContext";
 
 ReactDOM.render(
   <React.StrictMode>
     <UserContextProvider>
-      <App />
+      <TemplateContextProvider>
+        <App />
+      </TemplateContextProvider>
     </UserContextProvider>
   </React.StrictMode>,
   document.getElementById("root")

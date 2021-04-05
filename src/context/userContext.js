@@ -6,7 +6,6 @@ const initialState = {
   isLogin: false,
   user: null,
   loading: true,
-  template: null,
 };
 
 const reducer = (state, action) => {
@@ -44,8 +43,6 @@ const reducer = (state, action) => {
         isLogin: false,
         // loading: false,
       };
-
-    case "TEMPLATE":
 
     default:
       throw new Error();

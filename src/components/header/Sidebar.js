@@ -21,7 +21,7 @@ export const Sidebar = () => {
       <div className="d-flex flex-column mt-3">
         <div className="d-flex justify-content-center align-items-center">
           <img
-            src="./img/wayslink.png"
+            src="/img/wayslink.png"
             style={{ height: "30px", width: "120px" }}
             className="d-flex justify-self-center align-self-center"
           />
@@ -33,7 +33,7 @@ export const Sidebar = () => {
           style={{ margin: "0px", padding: "0px" }}
         >
           <button className="btn btn-lg d-flex  align-items-center sidebar-btn mt-3">
-            <img src="./img/templatelogo2.png" className="mr-2 ml-4" />
+            <img src="/img/templatelogo2.png" className="mr-2 ml-4" />
             Template
           </button>
         </Nav.Link>
@@ -44,7 +44,7 @@ export const Sidebar = () => {
           style={{ margin: "0px", padding: "0px" }}
         >
           <button className="btn btn-lg d-flex  align-items-center sidebar-btn mt-3">
-            <img src="./img/profilelogo.png" className="mr-2 ml-4" />
+            <img src="/img/profilelogo.png" className="mr-2 ml-4" />
             Profile
           </button>
         </Nav.Link>
@@ -55,7 +55,7 @@ export const Sidebar = () => {
           style={{ margin: "0px", padding: "0px" }}
         >
           <button className="btn btn-lg d-flex  align-items-center sidebar-btn mt-3">
-            <img src="./img/broken-link.png" className="mr-2 ml-4" />
+            <img src="/img/broken-link.png" className="mr-2 ml-4" />
             My Link
           </button>
         </Nav.Link>
@@ -65,7 +65,7 @@ export const Sidebar = () => {
           className="btn btn-lg d-flex align-items-center sidebar-btn ml-3"
           onClick={clickLogOut}
         >
-          <img src="./img/logout.png" className="mr-2" />
+          <img src="/img/logout.png" className="mr-2" />
           Log Out
         </button>
       </div>

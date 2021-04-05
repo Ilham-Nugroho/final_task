@@ -15,12 +15,15 @@ import { Landing } from "./pages/Landing";
 import { Template } from "./pages/Template";
 import { CreateLink } from "./pages/CreateLink";
 import { MyLink } from "./pages/MyLink";
+import { Profile } from "./pages/Profile";
+
 import { UniqueLink } from "./pages/UniqueLink";
 
 import { Template1 } from "./components/template/Template1";
 import { Template2 } from "./components/template/Template2";
 import { Template3 } from "./components/template/Template3";
 import { Template4 } from "./components/template/Template4";
+import { AddLinks } from "./pages/AddLinks";
 
 if (localStorage.token) {
   setAuthToken(localStorage.token);
@@ -74,7 +77,8 @@ function App() {
         <Switch>
           <Route exact path="/" component={Landing} />
           <PrivateRoute exact path="/template" component={Template} />
-          <PrivateRoute exact path="/link" component={CreateLink} />
+          <PrivateRoute exact path="/link" component={AddLinks} />
+          <PrivateRoute exact path="/profile" component={Profile} />
           <PrivateRoute exact path="/my-link" component={MyLink} />
           <Route exact path="/link/:unique" component={Template4} />
         </Switch>

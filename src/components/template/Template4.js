@@ -23,6 +23,9 @@ export const Template4 = () => {
       className="d-flex align-items-center justify-content-center"
       style={{ minHeight: "100vh", backgroundColor: "#e5e5e5" }}
     >
+      <div>
+        <Sidebar />
+      </div>
       {template4Loading ? (
         <Spinner animation="border" role="status" variant="warning">
           <span className="sr-only">Loading...</span>
@@ -39,7 +42,8 @@ export const Template4 = () => {
           <div className="d-flex justify-content-center">
             {/* <img src={response?.image} /> */}
             <img
-              src="../img/instagram.png"
+              // src="../img/instagram.png"
+              src={response?.image}
               style={{ width: "auto", height: "200px" }}
             />
           </div>
@@ -53,7 +57,7 @@ export const Template4 = () => {
           <div className="mt-3 d-flex justify-content-center">
             {response?.sublink.map(({ subtitle, subimage, suburl }, index) => (
               <img
-                src="../img/instagram.png"
+                src={subimage}
                 style={{
                   width: "40px",
                   height: "40px",
