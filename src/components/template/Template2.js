@@ -37,9 +37,8 @@ export const Template2 = () => {
           className=""
         >
           <div className="d-flex justify-content-center">
-            {/* <img src={response?.image} /> */}
             <img
-              src="../img/instagram.png"
+              src={response?.image}
               style={{ width: "80px", height: "80px", borderRadius: "100%" }}
             />
           </div>
@@ -48,7 +47,9 @@ export const Template2 = () => {
           </div>
 
           <div className="d-flex justify-content-center">
-            <h5 style={{ color: "#766c6c" }}>{response?.description}</h5>
+            <h5 style={{ color: "#766c6c", textAlign: "center" }}>
+              {response?.description}
+            </h5>
           </div>
           <div>
             {response?.sublink.map(({ subtitle, subimage, suburl }, index) => (
@@ -62,9 +63,8 @@ export const Template2 = () => {
                     borderRadius: "50px",
                   }}
                 >
-                  {/* {subimage} */}
                   <img
-                    src="../img/instagram.png"
+                    src={subimage}
                     style={{
                       width: "40px",
                       height: "40px",

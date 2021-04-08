@@ -17,7 +17,7 @@ export const Template3 = () => {
     return API.get(`/link/${unique}`);
   });
   const response = template3Data?.data?.data?.link;
-  console.log(template3Data?.data?.data?.link);
+
   return (
     <div
       className="d-flex align-items-center justify-content-center"
@@ -37,23 +37,30 @@ export const Template3 = () => {
           className=""
         >
           <div className="d-flex justify-content-center">
-            {/* <img src={response?.image} /> */}
             <img
-              src="../img/instagram.png"
-              style={{ width: "auto", height: "200px" }}
+              src={response?.image}
+              style={{ width: "100%", height: "200px", objectFit: "cover" }}
             />
           </div>
           <div className="d-flex justify-content-center align-items-center mt-3 mb-3">
             <h4 style={{ margin: "0px" }}>{response?.title}</h4>
           </div>
 
-          <div className="d-flex justify-content-center">
-            <h5 style={{ color: "#766c6c" }}>{response?.description}</h5>
+          <div className="d-flex justify-content-center ">
+            <h5
+              style={{
+                color: "#766c6c",
+                fontSize: "18px",
+                textAlign: "center",
+              }}
+            >
+              {response?.description}
+            </h5>
           </div>
           <div className="mt-3 d-flex justify-content-center">
             {response?.sublink.map(({ subtitle, subimage, suburl }, index) => (
               <img
-                src="../img/instagram.png"
+                src={subimage}
                 style={{
                   width: "40px",
                   height: "40px",

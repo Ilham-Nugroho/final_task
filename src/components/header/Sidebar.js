@@ -19,13 +19,18 @@ export const Sidebar = () => {
   return (
     <div className="sidebar d-flex flex-column justify-content-between ">
       <div className="d-flex flex-column mt-3">
-        <div className="d-flex justify-content-center align-items-center">
+        <Navbar.Brand
+          // href="/"
+          as={Link}
+          to="/"
+          className="d-flex justify-content-center align-items-center"
+        >
           <img
             src="/img/wayslink.png"
             style={{ height: "30px", width: "120px" }}
             className="d-flex justify-self-center align-self-center"
           />
-        </div>
+        </Navbar.Brand>
 
         <Nav.Link
           as={Link}

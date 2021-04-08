@@ -11,6 +11,8 @@ import { API, setAuthToken } from "../config/api";
 import { Sidebar } from "../components/header/Sidebar";
 
 export const AddLinks = () => {
+  const { temp } = useParams();
+
   const [userState, userDispatch] = useContext(UserContext);
 
   const [form, setForm] = useState({
@@ -47,12 +49,11 @@ export const AddLinks = () => {
       body.append("title", title);
       body.append("description", description);
       body.append("image", image);
+      body.append("template", temp);
       body.append("links", linksStringify);
       links.map((data) => {
         body.append("image", data.subimage);
       });
-
-      // console.log(body);
 
       const responseMain = await API.post("/link", body, config);
       return responseMain;
@@ -62,40 +63,12 @@ export const AddLinks = () => {
     }
   });
 
-  console.log(createMainLink);
-
-  // const createSubLink = useMutation(async () => {
-  //   try {
-  //     const config = {
-  //       headers: {
-  //         "Content-Type": "multipart/form-data",
-  //       },
-  //     };
-
-  //     const subbody = new FormData();
-
-  //     // links.map((data) => {});
-
-  //     // subbody.append("links", linksStringify);
-  //     subbody.append("subtitle", subtitle);
-  //     subbody.append("suburl", suburl);
-  //     subbody.append("image", subimage);
-  //     // subbody.append("mainId", responseMain.id);
-
-  //     // console.log(subbody);
-
-  //     await API.post("/sublink", subbody, config);
-  //   } catch (error) {
-  //     console.log(error);
-  //     alert("Oopss, error occured: ", error);
-  //   }
-  // });
-
   const handleSubmit = (event) => {
     event.preventDefault();
 
     createMainLink.mutate();
-    // createSubLink.mutate();
+
+    alert("Your Link have been published");
 
     setForm({
       title: "",
@@ -177,7 +150,7 @@ export const AddLinks = () => {
                 </div>
                 <div className=" mb-2 d-flex align-items-center">
                   <div>
-                    <img src="./img/preview.png" style={{ width: "90%" }} />
+                    <img src="/img/preview.png" style={{ width: "90%" }} />
                   </div>
 
                   <input
@@ -217,7 +190,7 @@ export const AddLinks = () => {
                     key={index}
                   >
                     <div>
-                      <img src="./img/preview.png" style={{ width: "90%" }} />
+                      <img src="/img/preview.png" style={{ width: "90%" }} />
                     </div>
                     <div className="width-100">
                       <div className="d-flex flex-column form-group">
@@ -254,7 +227,7 @@ export const AddLinks = () => {
 
                 <div className="d-flex width-100 align-items-center mt-3 mb-2">
                   <div>
-                    <img src="./img/preview.png" style={{ width: "90%" }} />
+                    <img src="/img/preview.png" style={{ width: "90%" }} />
                   </div>
                   <div className="width-100">
                     <div className="d-flex flex-column form-group">
@@ -302,7 +275,18 @@ export const AddLinks = () => {
           </div>
 
           <div style={{ width: "70%" }} className="mt-3">
-            <img src="./img/template1.png" style={{ width: "300px" }} />
+            <img
+              src={
+                temp == 1
+                  ? "/img/template1.png"
+                  : temp == 2
+                  ? "/img/template2.png"
+                  : temp == 3
+                  ? "/img/template3.png"
+                  : "/img/template4.png"
+              }
+              style={{ width: "300px" }}
+            />
           </div>
         </div>
       </div>

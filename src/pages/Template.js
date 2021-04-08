@@ -6,15 +6,10 @@ import { TemplateContext } from "../context/templateContext";
 export const Template = () => {
   const [templateState, setTemplateState] = useContext(TemplateContext);
   const history = useHistory();
-  const handleClick = (event) => {
-    event.preventDefault();
 
-    history.push("/link");
+  const handleClick = async (template) => {
+    history.push(template + "/link/");
   };
-
-  // const clickTemplate = () => {
-  //   setTemplateState
-  // }
 
   return (
     <div className="d-flex ">
@@ -31,29 +26,32 @@ export const Template = () => {
         <div className="row mt-5" style={{ margin: "0" }}>
           <div
             className="d-flex col-lg-3 col-md-6 mt-3 align-items-center justify-content-center"
-            onClick={handleClick}
+            onClick={() => handleClick(1)}
           >
             <img
-              src="./img/template1.png"
+              src="/img/template1.png"
               style={{ width: "250px", height: "350px" }}
             />
           </div>
           <div className="d-flex col-lg-3 col-md-6 mt-3 justify-content-center">
             <img
-              src="./img/template2.png"
+              src="/img/template2.png"
               style={{ width: "250px", height: "350px" }}
+              onClick={() => handleClick(2)}
             />
           </div>
           <div className="d-flex col-lg-3 col-md-6 mt-3 justify-content-center">
             <img
-              src="./img/template3.png"
+              src="/img/template3.png"
               style={{ width: "250px", height: "350px" }}
+              onClick={() => handleClick(3)}
             />
           </div>
           <div className="d-flex col-lg-3 col-md-6 mt-3 justify-content-center">
             <img
-              src="./img/template4.png"
+              src="/img/template4.png"
               style={{ width: "250px", height: "350px" }}
+              onClick={() => handleClick(4)}
             />
           </div>
         </div>

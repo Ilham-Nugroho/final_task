@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { useQuery, useMutation } from "react-query";
 import { useHistory } from "react-router";
 import { useParams, Link } from "react-router-dom";
@@ -9,6 +9,7 @@ import { UserContext } from "../context/userContext";
 
 import { API, setAuthToken } from "../config/api";
 import { Sidebar } from "../components/header/Sidebar";
+import { Header } from "../components/header/Header";
 
 export const MyLink = () => {
   const [userState, userDispatch] = useContext(UserContext);
@@ -18,13 +19,20 @@ export const MyLink = () => {
     data: mylinkData,
     error: mylinkError,
     loading: mylinkLoading,
+    refetch,
   } = useQuery("productCache", async () => {
     return API.get("/my-link");
   });
 
-  const handleClick = async (link) => {
-    history.push("/link/" + link);
+  console.log(mylinkData?.data?.data?.link);
+
+  const handleClick = async (temp, link) => {
+    history.push(temp + "/link/" + link);
   };
+
+  useEffect(() => {
+    refetch();
+  }, []);
 
   return (
     <div className="">
@@ -55,14 +63,15 @@ export const MyLink = () => {
                 </div>
 
                 <div style={{ maxHeight: "80vh", overflow: "scroll" }}>
-                  {mylinkData?.data?.data?.link?.map((data) => (
+                  {mylinkData?.data?.data?.link?.map((data, index) => (
                     <div
+                      key={index}
                       style={{ margin: "0 20px" }}
                       className="d-flex align-items-center justify-content-between mt-4"
                     >
                       <div className="d-flex  align-items-center justify-content-start">
                         <img
-                          src="./img/instagram.png"
+                          src={data?.image}
                           style={{ width: "70px", height: "70px" }}
                         />
                         <div className="ml-3">
@@ -72,8 +81,10 @@ export const MyLink = () => {
                           </h6>
                         </div>
                       </div>
-                      <div>
-                        {data?.views}
+                      <div className="">
+                        <h6 className="d-flex justify-content-center">
+                          {data?.views}
+                        </h6>
                         <h6>Views</h6>
                       </div>
                       <div
@@ -82,10 +93,19 @@ export const MyLink = () => {
                       >
                         <img
                           src="./img/View.png"
-                          onClick={() => handleClick(data?.uniquelink)}
+                          onClick={() =>
+                            handleClick(data?.template, data?.uniquelink)
+                          }
                           style={{ cursor: "pointer" }}
                         />
-                        <img src="./img/Edit.png" />
+                        <img
+                          src="./img/Edit.png"
+                          onClick={() =>
+                            history.push(
+                              `/link/edit/${data?.template}/${data?.uniquelink}`
+                            )
+                          }
+                        />
                         <img src="./img/Delete.png" />
                       </div>
                     </div>

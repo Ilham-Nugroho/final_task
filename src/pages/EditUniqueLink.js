@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { useQuery, useMutation } from "react-query";
 
 import { Spinner, Form, FormFile } from "react-bootstrap";
@@ -10,21 +10,40 @@ import { useParams } from "react-router-dom";
 import { API, setAuthToken } from "../config/api";
 import { Sidebar } from "../components/header/Sidebar";
 
-export const CreateLink = () => {
-  const [userState, userDispatch] = useContext(UserContext);
+export const EditUniqueLink = () => {
+  const { temp, unique } = useParams();
+
+  const {
+    data: editLinkData,
+    error: editLinkError,
+    loading: editLinkLoading,
+    refetch: editLinkRefetch,
+  } = useQuery(
+    "editLinkCache",
+    async () => {
+      return API.get(`/link/${unique}`);
+    },
+    {
+      onSuccess: (data) => {
+        setForm(data?.data?.data?.link);
+      },
+    }
+  );
 
   const [form, setForm] = useState({
-    image: null,
     title: "",
+    image: "",
     description: "",
-    views: "",
-    template: "",
-    links: [],
+    sublink: [],
   });
 
-  const { image, title, description, views, template, links } = form;
+  const [fromSublink, setFromSublink] = useState();
 
-  // console.log(JSON.stringify(links));
+  const [userState, userDispatch] = useContext(UserContext);
+
+  // const { image, title, description, views, template, links } = form;
+
+  const linksStringify = JSON.stringify(form?.sublink);
 
   const [link, setLink] = useState({
     subtitle: "",
@@ -34,43 +53,33 @@ export const CreateLink = () => {
 
   const { subtitle, suburl, subimage } = link;
 
-  const linksStringify = JSON.stringify(links);
-
-  const createMainLink = useMutation(async () => {
+  const editUnique = useMutation(async () => {
     try {
       const config = {
         headers: {
           "Content-Type": "multipart/form-data",
-          // "Content-Type": "application/x-www-form-urlencoded",
         },
       };
 
       const body = new FormData();
 
-      body.append("title", title);
-      body.append("description", description);
-      body.append("image", image);
-      // body.append("links", linksStringify);
+      body.append("title", form?.title);
+      body.append("description", form?.description);
+      body.append("image", form?.image);
+      body.append("template", temp);
+      body.append("sublink", linksStringify);
+      form?.sublink?.map((data) => {
+        body.append("image", data.subimage);
+      });
 
-      // const fromBody = {
-      //   image: image,
-      //   title: title,
-      //   description: description,
-      //   views: views,
-      //   template: template,
+      // console.log(body);
 
-      //   links: links.map((data) => ({
-      //     subtitle: data.subtitle,
-      //     suburl: data.suburl,
-      //     subimage: data.subimage,
-      //   })),
-      // };
-
-      // const body = JSON.stringify(fromBody);
-
-      console.log(body);
-
-      await API.post("/link", body, config);
+      const responseMain = await API.patch(
+        `/link/edit/${unique}`,
+        body,
+        config
+      );
+      return responseMain;
     } catch (error) {
       console.log(error);
       alert("Oopss, error occured: ", error);
@@ -80,18 +89,13 @@ export const CreateLink = () => {
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    createMainLink.mutate();
+    editUnique.mutate();
+
+    alert("Your Link have been published");
 
     setForm({
       title: "",
       description: "",
-      links: [
-        {
-          subtitle: "",
-          suburl: "",
-          subimage: "",
-        },
-      ],
     });
   };
 
@@ -103,28 +107,18 @@ export const CreateLink = () => {
     setForm(tempForm);
   };
 
-  const changeOnLink = (event) => {
-    const tempLink = { ...link };
-    tempLink[event.target.name] =
+  const changeOnLink = (event, index) => {
+    const tempForm = { ...form };
+
+    tempForm.sublink[index][event.target.name] =
       event.target.type === "file" ? event.target.files[0] : event.target.value;
-
-    setLink(tempLink);
-  };
-
-  const changeOnLinkImage = (event) => {
-    const file = event.target.files[0];
-    const reader = new FileReader();
-    reader.onloadend = function () {
-      const resultImg = reader.result;
-      setLink({ ...link, subimage: resultImg });
-    };
-    reader.readAsDataURL(file);
+    setForm(tempForm);
   };
 
   const onClickToAddLinks = () => {
     const addNewLink = {
       ...form,
-      links: [...links, link],
+      sublink: [...form?.sublink, link],
     };
 
     setForm(addNewLink);
@@ -179,17 +173,8 @@ export const CreateLink = () => {
                 </div>
                 <div className=" mb-2 d-flex align-items-center">
                   <div>
-                    <img src="./img/preview.png" style={{ width: "90%" }} />
+                    <img src="/img/preview.png" style={{ width: "90%" }} />
                   </div>
-                  {/* <Form.File
-                    id="custom-file"
-                    label="Add Link-Group Image"
-                    style={{ margin: "0px 10px" }}
-                    value={image}
-                    name="image"
-                    // onChange={handleChange}
-                    custom
-                  /> */}
 
                   <input
                     type="file"
@@ -204,7 +189,7 @@ export const CreateLink = () => {
                   <label className="color-7e7a7a">Your Link-Group Title:</label>
                   <input
                     className="form-control-link"
-                    value={title}
+                    value={form?.title}
                     name="title"
                     type="text"
                     onChange={handleChange}
@@ -215,20 +200,58 @@ export const CreateLink = () => {
                   <label className="color-7e7a7a">Description</label>
                   <textarea
                     className="form-control-link"
-                    value={description}
+                    value={form?.description}
                     name="description"
                     type="text"
                     onChange={handleChange}
                   />
                 </div>
 
-                {links.map(({ subtitle, suburl, subimage }, index) => (
+                {form?.sublink?.map(({ subtitle, suburl, subimage }, index) => (
                   <div
                     className="d-flex width-100 align-items-center mb-5"
                     key={index}
                   >
                     <div>
-                      <img src="./img/preview.png" style={{ width: "90%" }} />
+                      <img src="/img/preview.png" style={{ width: "90%" }} />
+                    </div>
+                    <div className="width-100">
+                      <div className="d-flex flex-column form-group">
+                        <label className="color-7e7a7a">Link Name</label>
+                        <input
+                          className="form-control-link"
+                          value={subtitle}
+                          name="subtitle"
+                          type="text"
+                          onChange={(event) => changeOnLink(event, index)}
+                        />
+                      </div>
+                      <div className="d-flex flex-column form-group">
+                        <label className="color-7e7a7a">URL</label>
+                        <input
+                          className="form-control-link"
+                          value={suburl}
+                          name="suburl"
+                          type="text"
+                          onChange={(event) => changeOnLink(event, index)}
+                        />
+                      </div>
+
+                      <input
+                        type="file"
+                        style={{ margin: "0px" }}
+                        // value={subimage?.name}
+                        name="subimage"
+                        onChange={(event) => changeOnLink(event, index)}
+                      />
+                    </div>
+                  </div>
+                ))}
+
+                {/* {fromSublink.map(({ subtitle, suburl }, index) => (
+                  <div className="d-flex width-100 align-items-center mt-3 mb-2">
+                    <div>
+                      <img src="/img/preview.png" style={{ width: "90%" }} />
                     </div>
                     <div className="width-100">
                       <div className="d-flex flex-column form-group">
@@ -239,6 +262,7 @@ export const CreateLink = () => {
                           name="subtitle"
                           type="text"
                           onChange={changeOnLink}
+                          placeholder="ex. Facebook"
                         />
                       </div>
                       <div className="d-flex flex-column form-group">
@@ -249,66 +273,20 @@ export const CreateLink = () => {
                           name="suburl"
                           type="text"
                           onChange={changeOnLink}
+                          placeholder="ex. www.facebook.com"
                         />
                       </div>
 
                       <input
                         type="file"
                         style={{ margin: "0px" }}
-                        // value={subimage?.name}
+                        // value={subimage}
                         name="subimage"
-                        onChange={changeOnLinkImage}
-                      />
-                    </div>
-                  </div>
-                ))}
-
-                <div className="d-flex width-100 align-items-center mt-3 mb-2">
-                  <div>
-                    <img src="./img/preview.png" style={{ width: "90%" }} />
-                  </div>
-                  <div className="width-100">
-                    <div className="d-flex flex-column form-group">
-                      <label className="color-7e7a7a">Link Name</label>
-                      <input
-                        className="form-control-link"
-                        value={subtitle}
-                        name="subtitle"
-                        type="text"
                         onChange={changeOnLink}
-                        placeholder="ex. Facebook"
                       />
                     </div>
-                    <div className="d-flex flex-column form-group">
-                      <label className="color-7e7a7a">URL</label>
-                      <input
-                        className="form-control-link"
-                        value={suburl}
-                        name="suburl"
-                        type="text"
-                        onChange={changeOnLink}
-                        placeholder="ex. www.facebook.com"
-                      />
-                    </div>
-                    {/* <Form.File
-                      id="custom-file"
-                      label="Add Link Image"
-                      style={{ margin: "0px" }}
-                      value={subimage}
-                      name="subimage"
-                      onChange={changeOnLink}
-                      custom
-                    /> */}
-
-                    <input
-                      type="file"
-                      style={{ margin: "0px" }}
-                      // value={subimage?.name}
-                      name="subimage"
-                      onChange={changeOnLinkImage}
-                    />
                   </div>
-                </div>
+                ))} */}
               </form>
               <div className="d-flex justify-content-center">
                 <button
@@ -322,7 +300,18 @@ export const CreateLink = () => {
           </div>
 
           <div style={{ width: "70%" }} className="mt-3">
-            <img src="./img/template1.png" style={{ width: "300px" }} />
+            <img
+              src={
+                temp == 1
+                  ? "/img/template1.png"
+                  : temp == 2
+                  ? "/img/template2.png"
+                  : temp == 3
+                  ? "/img/template3.png"
+                  : "/img/template4.png"
+              }
+              style={{ width: "300px" }}
+            />
           </div>
         </div>
       </div>

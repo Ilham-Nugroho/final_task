@@ -8,7 +8,10 @@ export const NavIn = (props) => {
     <div>
       <Navbar id="nav" expand="lg" variant="light" bg="light">
         <Navbar.Brand href="/" className="text-light" id="brand">
-          <img src="./logo192.png" style={{ width: "50px", height: "50px" }} />
+          <img
+            src="/img/wayslink.png"
+            style={{ width: "50px", height: "50px" }}
+          />
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
@@ -19,7 +22,7 @@ export const NavIn = (props) => {
                 style={{ backgroundColor: "transparent" }}
               >
                 <img
-                  src="./img/profilelogo.png"
+                  src="/img/profilelogo.png"
                   style={{ width: "25px", height: "25px" }}
                   className="mr-2"
                 />
@@ -32,7 +35,7 @@ export const NavIn = (props) => {
                 style={{ backgroundColor: "transparent" }}
               >
                 <img
-                  src="./img/addproductlogo.png"
+                  src="/img/addproductlogo.png"
                   style={{ width: "25px", height: "25px" }}
                   className="mr-2"
                 />
@@ -45,7 +48,7 @@ export const NavIn = (props) => {
                 style={{ backgroundColor: "transparent", width: "120px" }}
               >
                 <img
-                  src="./img/files.png"
+                  src="/img/files.png"
                   style={{ width: "15px", height: "25px" }}
                   className="mr-2"
                 />

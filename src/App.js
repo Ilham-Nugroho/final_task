@@ -8,22 +8,17 @@ import "./styles.css";
 import { UserContextProvider, UserContext } from "./context/userContext";
 import { setAuthToken, API } from "./config/api";
 
-import { Header } from "./components/header/Header";
-
 import PrivateRoute from "./pages/PrivateRoutes";
 import { Landing } from "./pages/Landing";
 import { Template } from "./pages/Template";
-import { CreateLink } from "./pages/CreateLink";
+
 import { MyLink } from "./pages/MyLink";
 import { Profile } from "./pages/Profile";
 
 import { UniqueLink } from "./pages/UniqueLink";
 
-import { Template1 } from "./components/template/Template1";
-import { Template2 } from "./components/template/Template2";
-import { Template3 } from "./components/template/Template3";
-import { Template4 } from "./components/template/Template4";
 import { AddLinks } from "./pages/AddLinks";
+import { EditUniqueLink } from "./pages/EditUniqueLink";
 
 if (localStorage.token) {
   setAuthToken(localStorage.token);
@@ -65,7 +60,7 @@ function App() {
   const client = new QueryClient({
     defaultOptions: {
       queries: {
-        cacheTime: 7200 * 1000, // 2 hours cache in memory
+        cacheTime: 0, // 2 hours cache in memory
         staleTime: Infinity,
       },
     },
@@ -78,9 +73,15 @@ function App() {
           <Route exact path="/" component={Landing} />
           <PrivateRoute exact path="/template" component={Template} />
           <PrivateRoute exact path="/link" component={AddLinks} />
+          <PrivateRoute exact path="/:temp/link" component={AddLinks} />
+          <PrivateRoute
+            exact
+            path="/link/edit/:temp/:unique"
+            component={EditUniqueLink}
+          />
           <PrivateRoute exact path="/profile" component={Profile} />
           <PrivateRoute exact path="/my-link" component={MyLink} />
-          <Route exact path="/link/:unique" component={Template4} />
+          <Route exact path="/:temp/link/:unique" component={UniqueLink} />
         </Switch>
       </Router>
     </QueryClientProvider>

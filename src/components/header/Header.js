@@ -59,7 +59,7 @@ export const Header = () => {
         >
           <Navbar.Brand href="/" className="text-light" id="brand">
             <img
-              src="./img/wayslink.png"
+              src="/img/wayslink.png"
               style={{ width: "100px", height: "20px" }}
             />
           </Navbar.Brand>
