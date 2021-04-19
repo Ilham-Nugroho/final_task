@@ -1,7 +1,7 @@
 import React, { useState, useContext, useEffect } from "react";
 import { useQuery, useMutation } from "react-query";
 
-import { Spinner, Form, FormFile } from "react-bootstrap";
+import { Spinner, Form, FormFile, Modal } from "react-bootstrap";
 
 import { UserContext } from "../context/userContext";
 
@@ -9,9 +9,11 @@ import { useParams } from "react-router-dom";
 
 import { API, setAuthToken } from "../config/api";
 import { Sidebar } from "../components/header/Sidebar";
+import { EditLinkModal } from "../components/modal/EditLinkModal";
 
 export const EditUniqueLink = () => {
   const { temp, unique } = useParams();
+  const [showModal, setShowModal] = useState(false);
 
   const {
     data: editLinkData,
@@ -89,9 +91,9 @@ export const EditUniqueLink = () => {
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    editUnique.mutate();
+    setShowModal(true);
 
-    alert("Your Link have been published");
+    editUnique.mutate();
 
     setForm({
       title: "",
@@ -127,6 +129,10 @@ export const EditUniqueLink = () => {
       suburl: "",
       subimage: "",
     });
+  };
+
+  const closeModal = () => {
+    setShowModal(false);
   };
 
   return (
@@ -247,46 +253,6 @@ export const EditUniqueLink = () => {
                     </div>
                   </div>
                 ))}
-
-                {/* {fromSublink.map(({ subtitle, suburl }, index) => (
-                  <div className="d-flex width-100 align-items-center mt-3 mb-2">
-                    <div>
-                      <img src="/img/preview.png" style={{ width: "90%" }} />
-                    </div>
-                    <div className="width-100">
-                      <div className="d-flex flex-column form-group">
-                        <label className="color-7e7a7a">Link Name</label>
-                        <input
-                          className="form-control-link"
-                          value={subtitle}
-                          name="subtitle"
-                          type="text"
-                          onChange={changeOnLink}
-                          placeholder="ex. Facebook"
-                        />
-                      </div>
-                      <div className="d-flex flex-column form-group">
-                        <label className="color-7e7a7a">URL</label>
-                        <input
-                          className="form-control-link"
-                          value={suburl}
-                          name="suburl"
-                          type="text"
-                          onChange={changeOnLink}
-                          placeholder="ex. www.facebook.com"
-                        />
-                      </div>
-
-                      <input
-                        type="file"
-                        style={{ margin: "0px" }}
-                        // value={subimage}
-                        name="subimage"
-                        onChange={changeOnLink}
-                      />
-                    </div>
-                  </div>
-                ))} */}
               </form>
               <div className="d-flex justify-content-center">
                 <button
@@ -315,6 +281,11 @@ export const EditUniqueLink = () => {
           </div>
         </div>
       </div>
+      <Modal show={showModal} onHide={closeModal} size="md">
+        <Modal.Body>
+          <EditLinkModal />
+        </Modal.Body>
+      </Modal>
     </div>
   );
 };

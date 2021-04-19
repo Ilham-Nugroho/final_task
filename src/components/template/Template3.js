@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { useQuery, useMutation } from "react-query";
 import { API } from "../../config/api";
 import { UserContext } from "../../context/userContext";
@@ -13,10 +13,25 @@ export const Template3 = () => {
     data: template3Data,
     error: template3Error,
     loading: template3Loading,
+    refetch: template3Refetch,
   } = useQuery(["template3Cache", unique], async () => {
     return API.get(`/link/${unique}`);
   });
   const response = template3Data?.data?.data?.link;
+
+  const updateLike = useMutation(async () => {
+    await API.post(`/link/${unique}`);
+
+    template3Refetch();
+  });
+
+  const addLikes = () => {
+    updateLike.mutate();
+  };
+
+  useEffect(() => {
+    template3Refetch();
+  }, []);
 
   return (
     <div
@@ -36,6 +51,20 @@ export const Template3 = () => {
           }}
           className=""
         >
+          <div className="d-flex mb-3 mt-2 justify-content-end">
+            <img
+              src="/img/heart.png"
+              style={{
+                width: "30px",
+                height: "auto",
+                marginRight: "10px",
+                cursor: "pointer",
+              }}
+              onClick={addLikes}
+            />
+            {/* <button onClick={addLikes}>Likes</button> */}
+            <h5>{response?.likes}</h5>
+          </div>
           <div className="d-flex justify-content-center">
             <img
               src={response?.image}
@@ -67,6 +96,7 @@ export const Template3 = () => {
                   borderRadius: "100%",
                   margin: "0px 5px",
                 }}
+                onClick={() => window.open(`http://${suburl}`)}
               />
             ))}
           </div>

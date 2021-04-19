@@ -1,15 +1,19 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { useQuery, useMutation } from "react-query";
+
+import { Modal } from "react-bootstrap";
 
 import { Sidebar } from "../components/header/Sidebar";
 import { UserContext } from "../context/userContext";
 
 import { API, setAuthToken } from "../config/api";
+import { ProfileEditModal } from "../components/modal/ProfileEditModal";
 
 export const Profile = () => {
   const [state, dispatch] = useContext(UserContext);
+  const [showModal, setShowModal] = useState(false);
 
-  console.log(state.user);
+  // console.log(state.user);
 
   const [form, setForm] = useState({
     fullName: "",
@@ -17,6 +21,19 @@ export const Profile = () => {
   });
 
   const { email, fullName } = form;
+
+  const {
+    data: profileData,
+    error: profileError,
+    loading: profileLoading,
+    refetch,
+  } = useQuery("oneProfileCache", async () => {
+    return API.get("/profile");
+  });
+
+  const response = profileData?.data?.data;
+
+  console.log(response);
 
   const editUser = useMutation(async () => {
     const config = {
@@ -44,14 +61,20 @@ export const Profile = () => {
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    editUser.mutate();
+    setShowModal(true);
 
-    alert("Your changes have been saved");
+    editUser.mutate();
 
     setForm({
       email: state.user.email,
       fullName: "",
     });
+  };
+
+  const closeModal = () => {
+    setShowModal(false);
+
+    refetch();
   };
 
   return (
@@ -74,7 +97,7 @@ export const Profile = () => {
                   <h5>Display Name</h5>
                 </label>
                 <input
-                  placeholder={state.user.fullName}
+                  placeholder={response?.fullName}
                   className="form-control-link"
                   value={fullName}
                   name="fullName"
@@ -106,6 +129,11 @@ export const Profile = () => {
           </div>
         </div>
       </div>
+      <Modal show={showModal} onHide={closeModal} size="md">
+        <Modal.Body>
+          <ProfileEditModal closeModal={closeModal} />
+        </Modal.Body>
+      </Modal>
     </div>
   );
 };

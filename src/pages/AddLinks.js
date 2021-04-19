@@ -1,17 +1,18 @@
 import React, { useState, useContext } from "react";
 import { useQuery, useMutation } from "react-query";
 
-import { Spinner, Form, FormFile } from "react-bootstrap";
-
 import { UserContext } from "../context/userContext";
 
 import { useParams } from "react-router-dom";
+import { Modal } from "react-bootstrap";
 
 import { API, setAuthToken } from "../config/api";
 import { Sidebar } from "../components/header/Sidebar";
+import { PublishModal } from "../components/modal/PublishModal";
 
 export const AddLinks = () => {
   const { temp } = useParams();
+  const [showModal, setShowModal] = useState(false);
 
   const [userState, userDispatch] = useContext(UserContext);
 
@@ -66,9 +67,11 @@ export const AddLinks = () => {
   const handleSubmit = (event) => {
     event.preventDefault();
 
+    setShowModal(true);
+
     createMainLink.mutate();
 
-    alert("Your Link have been published");
+    // alert("Your Link have been published");
 
     setForm({
       title: "",
@@ -104,6 +107,10 @@ export const AddLinks = () => {
       suburl: "",
       subimage: "",
     });
+  };
+
+  const closeModal = () => {
+    setShowModal(false);
   };
 
   return (
@@ -290,6 +297,11 @@ export const AddLinks = () => {
           </div>
         </div>
       </div>
+      <Modal show={showModal} onHide={closeModal} size="md">
+        <Modal.Body>
+          <PublishModal />
+        </Modal.Body>
+      </Modal>
     </div>
   );
 };

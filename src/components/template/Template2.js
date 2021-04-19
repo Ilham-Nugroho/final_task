@@ -53,7 +53,7 @@ export const Template2 = () => {
           </div>
           <div>
             {response?.sublink.map(({ subtitle, subimage, suburl }, index) => (
-              <div key={index}>
+              <div key={index} onClick={() => window.open(`http://${suburl}`)}>
                 <div
                   className="d-flex justify-content-center"
                   style={{

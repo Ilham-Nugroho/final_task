@@ -115,3 +115,12 @@
   outline: none;
   border-bottom: 2px solid #766c6c;
 }
+
+.modal-btn {
+  background-color: #ff9f00;
+  border-radius: 10px;
+  color: white;
+  height: 50px;
+  width: 150px;
+  text-align: center;
+}

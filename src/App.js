@@ -19,6 +19,7 @@ import { UniqueLink } from "./pages/UniqueLink";
 
 import { AddLinks } from "./pages/AddLinks";
 import { EditUniqueLink } from "./pages/EditUniqueLink";
+import { DeleteModal } from "./components/modal/DeleteModal";
 
 if (localStorage.token) {
   setAuthToken(localStorage.token);
@@ -82,6 +83,7 @@ function App() {
           <PrivateRoute exact path="/profile" component={Profile} />
           <PrivateRoute exact path="/my-link" component={MyLink} />
           <Route exact path="/:temp/link/:unique" component={UniqueLink} />
+          <Route exact path="/delete" component={DeleteModal} />
         </Switch>
       </Router>
     </QueryClientProvider>

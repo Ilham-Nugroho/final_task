@@ -52,7 +52,9 @@ export const Template4 = () => {
             </div>
 
             <div className="d-flex justify-content-center">
-              <h5 style={{ color: "#766c6c" }}>{response?.description}</h5>
+              <h5 style={{ color: "#766c6c", textAlign: "center" }}>
+                {response?.description}
+              </h5>
             </div>
             <div className="mt-3 d-flex justify-content-center">
               {response?.sublink.map(
@@ -65,7 +67,7 @@ export const Template4 = () => {
                       borderRadius: "100%",
                       margin: "0px 5px",
                     }}
-                    onClick={() => history.push({ suburl })}
+                    onClick={() => window.open(`http://${suburl}`)}
                   />
                 )
               )}

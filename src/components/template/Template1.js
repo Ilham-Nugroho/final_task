@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import { useQuery, useMutation } from "react-query";
 import { API } from "../../config/api";
 import { UserContext } from "../../context/userContext";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 
 import { Spinner } from "react-bootstrap";
 import { Sidebar } from "../header/Sidebar";
@@ -51,7 +51,7 @@ export const Template1 = () => {
           </div>
           <div>
             {response?.sublink?.map(({ subtitle, subimage, suburl }, index) => (
-              <div key={index}>
+              <div key={index} onClick={() => window.open(`http://${suburl}`)}>
                 <div
                   className="d-flex justify-content-center"
                   style={{

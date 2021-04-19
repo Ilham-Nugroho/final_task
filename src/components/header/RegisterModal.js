@@ -52,8 +52,10 @@ export const RegisterModal = (props) => {
 
     setAuthToken(response.data.data.user.token);
 
-    router.push("/");
+    // router.push("/");
   });
+
+  console.log(registerUser);
   //--------------------------------handle---------------------------------
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -61,7 +63,7 @@ export const RegisterModal = (props) => {
     registerUser.mutate();
 
     refetch();
-    clickRegister(event);
+    // clickRegister(event);
   }; //NEW
 
   const handleChange = (event) => {
@@ -77,6 +79,12 @@ export const RegisterModal = (props) => {
       <div className="form-signin">
         <form onSubmit={handleSubmit}>
           <h1 className="login-h1">Register</h1>
+
+          {registerUser?.error?.response?.data && (
+            <div class="alert alert-danger" role="alert">
+              {registerUser.error?.response?.data.message}
+            </div>
+          )}
 
           <input
             onChange={handleChange}

@@ -3,17 +3,20 @@ import { useQuery, useMutation } from "react-query";
 import { useHistory } from "react-router";
 import { useParams, Link } from "react-router-dom";
 
+import { Modal } from "react-bootstrap";
+
 import { Spinner } from "react-bootstrap";
 
 import { UserContext } from "../context/userContext";
 
 import { API, setAuthToken } from "../config/api";
 import { Sidebar } from "../components/header/Sidebar";
-import { Header } from "../components/header/Header";
+import { DeleteModal } from "../components/modal/DeleteModal";
 
 export const MyLink = () => {
   const [userState, userDispatch] = useContext(UserContext);
   const history = useHistory();
+  const [showModal, setShowModal] = useState(false);
 
   const {
     data: mylinkData,
@@ -28,6 +31,22 @@ export const MyLink = () => {
 
   const handleClick = async (temp, link) => {
     history.push(temp + "/link/" + link);
+  };
+
+  const deleteLink = useMutation(async (unique) => {
+    await API.delete(`/link/${unique}`);
+
+    refetch();
+  });
+
+  const clickToDelete = async (unique) => {
+    setShowModal(true);
+
+    deleteLink.mutate(unique);
+  };
+
+  const closeModal = () => {
+    setShowModal(false);
   };
 
   useEffect(() => {
@@ -87,6 +106,12 @@ export const MyLink = () => {
                         </h6>
                         <h6>Views</h6>
                       </div>
+                      <div className="">
+                        <h6 className="d-flex justify-content-center">
+                          {data?.likes}
+                        </h6>
+                        <h6>Likes</h6>
+                      </div>
                       <div
                         className="d-flex align-items-center justify-content-around"
                         style={{ width: "200px" }}
@@ -100,13 +125,21 @@ export const MyLink = () => {
                         />
                         <img
                           src="./img/Edit.png"
+                          style={{ cursor: "pointer" }}
                           onClick={() =>
                             history.push(
                               `/link/edit/${data?.template}/${data?.uniquelink}`
                             )
                           }
                         />
-                        <img src="./img/Delete.png" />
+                        <img
+                          src="./img/Delete.png"
+                          style={{ cursor: "pointer" }}
+                          onClick={() =>
+                            // setShowModal(true)
+                            clickToDelete(data?.uniquelink)
+                          }
+                        />
                       </div>
                     </div>
                   ))}
@@ -116,6 +149,11 @@ export const MyLink = () => {
           </div>
         )}
       </div>
+      <Modal show={showModal} onHide={closeModal} size="md">
+        <Modal.Body>
+          <DeleteModal closeModal={closeModal} />
+        </Modal.Body>
+      </Modal>
     </div>
   );
 };
